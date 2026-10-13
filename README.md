@@ -48,3 +48,15 @@ No hay prórroga: suban avances parciales con commits pequeños durante la prueb
 | [`test-manager-library-3145556-page`](https://github.com/code-sena/test-manager-library-3145556-page) | Sitio público estático de presentación |
 | [`test-manager-library-3145556-infra`](https://github.com/code-sena/test-manager-library-3145556-infra) | Contenedores, red, volúmenes y motor de base de datos vacío |
 | [`test-manager-library-3145556-tool`](https://github.com/code-sena/test-manager-library-3145556-tool) | Utilidades: sembrador de datos de demostración |
+
+## Sembrador de demostración (T-21)
+
+Crea los datos **solo por la API**, nunca por SQL (`data-model.md` §9). Requiere Node 18 o superior y la API levantada desde `infra`. Correr una sola vez, con la base vacía.
+
+```bash
+ADMIN_USERNAME=admin ADMIN_PASSWORD=<clave> node seed.mjs http://localhost:8000/api/v1
+```
+
+Crea 40 libros, 10 socios y 15 préstamos (4 devueltos).
+
+**Evidencia parcial:** T-21 pide además 3 préstamos vencidos, pero la API siempre presta en el instante actual con un plazo de 14 días, así que un préstamo vencido no se puede crear por la API. Por eso `/loans/overdue` devuelve 0 líneas. Está registrado como INC-06 en el ADR-005 del repositorio `docs`.
